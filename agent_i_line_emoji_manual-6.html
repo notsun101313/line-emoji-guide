@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent iで作るLINE絵文字 販売マニュアル</title>
+<style>
+  :root{
+    --primary:#2ecc71;
+    --primary-d:#16a34a;
+    --secondary:#4fd1a0;
+    --accent:#ffc44d;
+    --cream:#f1fdf6;
+    --card:#ffffff;
+    --ink:#333333;
+    --ink-2:#6b7280;
+    --ink-3:#9ca3af;
+    --line:#ddf3e5;
+    --dark:#2f3440;
+    --dark-2:#3d4351;
+    --line-green:#06C755;
+    --pink-accent:#e85a71;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:"Hiragino Maru Gothic ProN","Zen Maru Gothic","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",Meiryo,system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.85;
+  }
+
+  .shell{
+    max-width:640px;
+    margin:0 auto;
+    background:var(--card);
+    box-shadow:0 0 60px -20px rgba(40,74,58,.25);
+    overflow:hidden;
+    min-height:100vh;
+  }
+
+  section{padding:40px 22px;}
+
+  .pill{
+    display:inline-block;
+    background:var(--primary);
+    color:#fff;
+    font-weight:800;
+    font-size:12.5px;
+    padding:5px 16px;
+    border-radius:999px;
+    box-shadow:0 4px 10px -4px rgba(46,204,113,.7);
+  }
+
+  .sec-head{ text-align:center; margin-bottom:26px; }
+  .sec-head h2{
+    font-size:clamp(20px,5.2vw,24px);
+    font-weight:800;
+    margin:0;
+    line-height:1.5;
+  }
+
+  .step-label{
+    display:inline-block;
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:.02em;
+    background:linear-gradient(135deg,#4fd88a 0%,#ffe08a 95%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:#4fd88a;
+    margin-bottom:6px;
+    line-height:1.2;
+  }
+
+  strong{ font-weight:800; }
+  .u{ text-decoration:underline; font-weight:bold; }
+
+  header.hero{
+    background:linear-gradient(150deg,#eafdf2 0%,#eefcf5 100%);
+    padding:38px 22px 36px;
+    text-align:center;
+    border-bottom-left-radius:32px;
+    border-bottom-right-radius:32px;
+  }
+  header.hero .pre{
+    font-size:13px;
+    color:var(--primary-d);
+    font-weight:700;
+    margin-bottom:8px;
+    background:rgba(46,204,113,.15);
+    display:inline-block;
+    padding:4px 14px;
+    border-radius:999px;
+  }
+  header.hero h1{
+    font-size:clamp(23px,6vw,30px);
+    font-weight:900;
+    line-height:1.42;
+    margin:10px 0 16px;
+    color:#3b3b3b;
+  }
+  header.hero h1 .main{ display:block; color:var(--primary-d); }
+  header.hero .lead-txt{
+    font-size:13.5px;
+    color:var(--ink-2);
+    text-align:left;
+    background:#fff;
+    padding:16px;
+    border-radius:16px;
+    border:1px solid var(--line);
+    margin-top:16px;
+  }
+
+  .flow-box{
+    background:rgba(235,250,240,.6);
+    border:1px solid #c8ecd9;
+    border-radius:20px;
+    padding:20px;
+  }
+  .flow-box ol{ margin:0; padding-left:20px; font-weight:bold; color:var(--primary-d); }
+  .flow-box li{ margin-bottom:8px; }
+  .flow-box li:last-child{ margin-bottom:0; }
+  .flow-box li span{ color:var(--ink); font-weight:normal; }
+
+  .prompt-wrap{
+    background:var(--dark);
+    border-radius:16px;
+    overflow:hidden;
+    margin:16px 0;
+  }
+  .prompt-wrap .bar{
+    background:var(--dark-2);
+    padding:10px 15px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    color:#cfd6e2;
+    font-size:12px;
+    font-weight:bold;
+  }
+  .copy-btn{
+    border:0;
+    background:var(--primary);
+    color:#fff;
+    font-size:12px;
+    font-weight:bold;
+    border-radius:999px;
+    padding:6px 14px;
+    cursor:pointer;
+  }
+  .prompt-body{
+    margin:0;
+    padding:16px;
+    font-family:monospace;
+    font-size:12px;
+    line-height:1.7;
+    color:#d8dee8;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+
+  .check-list{ list-style:none; padding:0; margin:16px 0; }
+  .check-list li{
+    background:#fff;
+    border:1px solid var(--line);
+    padding:10px 14px;
+    border-radius:12px;
+    margin-bottom:8px;
+    font-size:13px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .example-box{
+    background:#fff8e7;
+    border:1px solid #ffe08a;
+    border-radius:14px;
+    padding:16px;
+    margin:16px 0;
+    font-size:13px;
+  }
+
+  .cta-section{
+    background:linear-gradient(180deg, #fff7f8 0%, #ffeef1 100%);
+    border-top:2px solid #ffd0d8;
+    padding:40px 22px;
+    text-align:center;
+  }
+
+  .cta-image-wrap{
+    margin-bottom:24px;
+  }
+  .cta-image-wrap img{
+    max-width:100%;
+    height:auto;
+    border-radius:16px;
+    box-shadow:0 10px 25px rgba(232,90,113,.2);
+  }
+
+  .cta-text-body{
+    text-align:left;
+    background:#fff;
+    padding:22px 20px;
+    border-radius:20px;
+    border:1px solid #fecdd3;
+    box-shadow:0 4px 15px rgba(0,0,0,.03);
+    font-size:14px;
+    line-height:1.9;
+    color:#4a4a4a;
+    margin-bottom:26px;
+  }
+
+  .cta-text-body p{
+    margin:0 0 14px;
+  }
+  .cta-text-body p:last-child{
+    margin-bottom:0;
+  }
+
+  .line-btn{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    background:linear-gradient(160deg, #06C755, #05b34c);
+    color:#fff;
+    text-decoration:none;
+    border-radius:50px;
+    padding:18px 20px;
+    box-shadow:0 10px 20px -5px rgba(6,199,85,.5);
+    transition:transform .15s, filter .2s;
+  }
+  .line-btn:active{ transform:scale(.97); }
+  .line-btn .tap-text{
+    font-size:12px;
+    font-weight:bold;
+    background:rgba(255,255,255,.2);
+    padding:2px 14px;
+    border-radius:999px;
+    margin-bottom:6px;
+  }
+  .line-btn .main-text{
+    font-size:17px;
+    font-weight:900;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .line-btn svg{ width:22px; height:22px; fill:#fff; }
+
+  footer{
+    background:var(--dark);
+    color:#9ca3af;
+    text-align:center;
+    padding:30px 20px;
+    font-size:12px;
+  }
+  footer a{ color:#cfd6e2; text-decoration:none; margin:0 8px; }
+  footer .copy{ margin-top:14px; font-size:11px; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <header class="hero">
+    <span class="pre">絵が描けなくても大丈夫</span>
+    <h1>
+      Agent iで作る<br>
+      <span class="main">LINE絵文字 販売マニュアル</span>
+    </h1>
+    <div class="lead-txt">
+      LINEのAI機能「Agent i」でイラストを作り、LINE Creators Marketで販売するまでの流れを、初心者向けにひとつずつ解説します。
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head">
+      <h2>📍 はじめに</h2>
+    </div>
+    <p style="font-size:14px; line-height:1.9;">
+      「LINE絵文字を作ってみたいけど、絵なんて描けない」——そんな人でも、今はAIを使えば自分でイラストを作れる時代になりました。<br><br>
+      普段使っているLINEのAI機能「Agent i」でイラストを作り、LINE絵文字として申請・販売するまでの流れを、順番に解説していきます。<br><br>
+      「何から始めたらいいか分からない」「自分には売れるようなものがない」——そんな人にも、まずは小さな商品をひとつ作って販売する経験として挑戦しやすい内容です。今回は、かわいい犬の絵文字を例に作っていきます。
+    </p>
+
+    <div class="flow-box">
+      <p style="margin:0 0 10px; font-weight:bold; font-size:15px; color:var(--ink);">まずは全体の流れ</p>
+      <p style="font-size:13px; margin:0 0 10px;">LINE絵文字を作って販売するまでにやることは、大きく3つです。</p>
+      <ol>
+        <li><span>Agent iで絵文字のイラストを作る</span></li>
+        <li><span>LINE絵文字用に画像を加工する</span></li>
+        <li><span>LINE Creators Marketから申請する</span></li>
+      </ol>
+      <p style="font-size:12px; margin:10px 0 0; color:var(--ink-2);">「なんだか難しそう」と思うかもしれませんが、一つずつやれば大丈夫です。まずは一番楽しい、イラスト作りから始めてみましょう。</p>
+    </div>
+  </section>
+
+  <section style="background:#f9fdfa; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
+    <div class="sec-head">
+      <span class="pill">STEP BY STEP</span>
+    </div>
+
+    <div style="margin-bottom:32px;">
+      <span class="step-label">1</span>
+      <h3 style="margin:0 0 10px; font-size:16px;">作る絵文字の内容を決める</h3>
+      <p style="font-size:13.5px; margin:0;">
+        最初は、かわいいだけでなく普段の会話で使いやすいことも大切です。例えば、こんな16種類です。
+      </p>
+      <ul style="display:grid; grid-template-columns:1fr 1fr; gap:8px; padding:0; list-style:none; margin:12px 0; font-size:13px;">
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">😊 笑顔</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">😄 大笑い</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">😢 泣く</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">😠 怒る</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">😲 びっくり</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">🤔 困る</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">😴 眠い</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">💖 ハート</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">🥺 お願い</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">👌 OK</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">🙏 ありがとう</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">🙇 ごめんね</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">☀️ おはよう</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">🌙 おやすみ</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">💪 がんばれ</li>
+        <li style="background:#fff; padding:6px 10px; border-radius:8px; border:1px solid var(--line);">🥰 うれしい</li>
+      </ul>
+      <p style="font-size:12.5px; color:var(--ink-2); margin:0;">
+        最初からたくさん作ろうとすると大変です。まずは普段のLINEで自分がよく使いそうな表情から考えてみると作りやすいですよ。
+      </p>
+    </div>
+
+    <div style="margin-bottom:32px;">
+      <span class="step-label">2</span>
+      <h3 style="margin:0 0 10px; font-size:16px;">Agent iに基本のキャラクターを作ってもらう</h3>
+      <p style="font-size:13.5px; margin:0;">
+        「かわいい犬を描いて」近くだと、作るたびに顔や絵柄が変わってしまうことがあります。そこで、最初に基本となるキャラクターの特徴を細かく指定します。今回は白いポメラニアンで作ってみます。犬種や色だけ変えてもOKです。
+      </p>
+
+      <div class="prompt-wrap">
+        <div class="bar">
+          <span>プロンプト例（基本用）</span>
+          <button class="copy-btn" onclick="copyText('prompt1')">コピーする</button>
+        </div>
+        <pre class="prompt-body" id="prompt1">LINE絵文字として使用するイラストを作ってください。
+
+白いポメラニアンの顔を正面から描いてください。
+
+・白背景
+・顔を大きく配置
+・丸くて可愛い顔
+・白くふわふわした毛
+・黒く丸い目
+・小さな黒い鼻
+・シンプルなアイコン風
+・線は太めではっきり
+・小さく表示しても表情が分かるデザイン
+・細かすぎる装飾は入れない
+・文字は入れない
+
+LINE絵文字として使いやすい、シンプルで見やすいデザインにしてください。</pre>
+      </div>
+      <p style="font-size:12.5px; color:var(--ink-2); margin:0;">
+        生成された中から「この子で作リたい」という基本デザインを決めます。ここで決めたキャラクターを基準に、表情違いを作っていきます。
+      </p>
+    </div>
+
+    <div style="margin-bottom:32px;">
+      <span class="step-label">3</span>
+      <h3 style="margin:0 0 10px; font-size:16px;">16種類の表情を作る</h3>
+      <p style="font-size:13.5px; margin:0 0 10px;">
+        LINE絵文字は小さく表示されるので、表情を少し変えるだけでは違いが分かりにくくなります。「見た瞬間に感情が分かる」くらい大きく変えるのがポイントです。基本デザインができたら、こんな指示を出してみてください（「基本デザインは変えずに、〜」に続けて伝えます）。
+      </p>
+      <div style="font-size:12.5px; background:#fff; padding:12px; border-radius:12px; border:1px solid var(--line); line-height:1.7;">
+        ・<strong>😊 笑顔：</strong>目を少し細めて口を開けた、うれしそうな笑顔にしてください。<br>
+        ・<strong>😄 大笑い：</strong>目を閉じて口を大きく開けて笑っている表情にしてください。<br>
+        ・<strong>😢 泣く：</strong>悲しそうな表情で、大粒の涙を流している顔にしてください。<br>
+        ・<strong>😠 怒る：</strong>眉を下げて、ぶっと怒っていることが一目で分かる表情にしてください。<br>
+        ・<strong>😲 びっくり：</strong>目を大きく開き、口を丸く開けた驚いた表情にしてください。<br>
+        ・<strong>🤔 困る：</strong>眉を下げて、少し困っている表情にしてください。<br>
+        ・<strong>😴 眠い：</strong>目を半分閉じて、眠そうな表情にしてください。<br>
+        ・<strong>💖 ハート：</strong>嬉しそうな笑顔にして、顔の横にシンプルなハートを1つ入れてください。<br>
+        ・<strong>🥺 お願い：</strong>目をうるうるさせて、お願いしているような可愛い表情にしてください。<br>
+        ・<strong>👌 OK：</strong>明るい笑顔で、OKという気持ちが伝わるポーズにしてください。<br>
+        ・<strong>🙏 ありがとう：</strong>目を細めた優しい笑顔で、感謝が伝わる表情にしてください。文字は入れないでください。<br>
+        ・<strong>☀️ おはよう：</strong>元気いっぱいの明るい笑顔にしてください。文字は入れないでください。<br>
+        ・<strong>🌙 おやすみ：</strong>目を閉じて気持ちよさそうに眠っている表情にしてください。<br>
+        ・<strong>💪 がんばれ：</strong>元気いっぱいの表情で応援していることが伝わるポーズにしてください。<br>
+        ・<strong>🥰 うれしい：</strong>目をキラキラさせて、とても喜んでいることが一目で分かる表情にしてください。
+      </div>
+
+      <div style="background:#fff; border-left:4px solid var(--primary); padding:12px 14px; margin-top:14px; border-radius:0 12px 12px 0;">
+        <strong style="font-size:13px;">💡 キャラクターが途中で変わってしまったら？</strong>
+        <p style="font-size:12.5px; margin:4px 0 0; color:var(--ink-2);">
+          AIで何枚も作っていると「あれ？最初の犬と顔が違う」ということがよくあります。同じ指示を行っても完全に同じキャラクターにならない場合があるので、違和感のある画像だけ作り直した方がセットとしてまとまりやすくなります。チェックしたいのは、目の形・耳の色・鼻の大きさ・顔の輪郭・毛の色・線の太さ・イラスト全体のタッチ。全部並べたときに「同じキャラクターの表情違いに見えるか」を確認してみてください。
+        </p>
+      </div>
+    </div>
+
+    <div style="margin-bottom:32px;">
+      <span class="step-label">4</span>
+      <h3 style="margin:0 0 6px; font-size:16px;">画像をスマートフォンに保存する</h3>
+      <p style="font-size:13px; margin:0 0 16px;">気に入ったイラストができたら、スマートフォンに保存します。「笑顔」「泣く」など順番を整理しておくと、後の作業がラクになります。</p>
+
+      <span class="step-label">5</span>
+      <h3 style="margin:0 0 6px; font-size:16px;">背景を透明にする</h3>
+      <p style="font-size:13px; margin:0 0 16px;">Agent iで白背景のイラストを作っても、「白い背景」と「透明な背景」は別物です。LINE絵文字として使用する画像は、イラスト以外の背景を透明にしたPNG画像にします。（Canvaや背景透過アプリなどで背景を消去して保存します）</p>
+
+      <span class="step-label">6</span>
+      <h3 style="margin:0 0 6px; font-size:16px;">LINE絵文字用のサイズに変更する（180×180px）</h3>
+      <p style="font-size:13px; margin:0 0 16px;">通常のLINE絵文字の画像サイズは「180×180px」です。Canvaなどのアプリで180×180pxのキャンバスを作り、その中にイラストを配置してPNGで保存します。</p>
+
+      <span class="step-label">7</span>
+      <h3 style="margin:0 0 6px; font-size:16px;">トークルームタブ画像を作る（96×74px）</h3>
+      <p style="font-size:13px; margin:0;">絵文字本体とは別に、「96×74px」のトークルームタブ画像も1枚用意します。一番分かりやすい「笑顔のポメラニアン」などを96×74pxにサイズ調整して保存します。</p>
+    </div>
+
+    <div style="background:#fff; padding:18px; border-radius:16px; border:1px solid var(--line);">
+      <h4 style="margin:0 0 10px; font-size:14.5px;">登録前に画像をチェックする</h4>
+      <ul class="check-list">
+        <li>☑️ 絵文字画像のサイズが揃っている（180×180px）</li>
+        <li>☑️ 必要な個数が揃っている</li>
+        <li>☑️ トークルームタブ画像を用意した（96×74px）</li>
+        <li>☑️ 背景が透明になっている</li>
+        <li>☑️ PNG形式で保存している</li>
+        <li>☑️ 小さく表示しても表情が分かる</li>
+        <li>☑️ 全部並べても同じキャラクターに見える</li>
+      </ul>
+      <p style="font-size:12px; color:var(--primary-d); font-weight:bold; margin:0; text-align:center;">ここまできたら、画像の準備は完了です！いよいよLINE Creators Marketへ進みます。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head">
+      <h2>🚀 LINE Creators Marketで申請する</h2>
+    </div>
+
+    <p style="font-size:13.5px;">
+      <strong>8. LINE Creators Marketにログインする</strong><br>
+      WEBブラウザからLINE Creators Marketにアクセスし、マイページ＞新規登録＞絵文字と進みます。<br><br>
+      <strong>9. タイトル・説明文を入力する</strong>
+    </p>
+
+    <div class="example-box">
+      <strong>入力例：</strong><br>
+      ・タイトル名：ふわふわ白ポメの毎日絵文字<br>
+      ・説明文：ふわふわ白ポメラニアンの可愛い絵文字です。笑ったり泣いたり怒ったり、毎日のLINEで使いやすい表情を集めました。<br>
+      ・クリエイター名：あなたの好きな名前（活動名や屋号でOK）
+    </div>
+
+    <p style="font-size:13.5px;">
+      <strong>10. 作った画像をアップロードする</strong><br>
+      販売情報を入力したら、絵文字本体の画像とトークルームタブ画像をアップロードします。<br><br>
+      <strong>11. AIを使って作ったことを正しく申告する</strong><br>
+      登録画面にAI生成物について確認する項目が表示されている場合は、制作方法に合わせて「AI使用」を正しく申告します。<br><br>
+      <strong>12. 審査をリクエストする</strong><br>
+      すべて確認できたら、審査をリクエストします。<br><br>
+      <strong>13. 審査に通ったら販売開始</strong><br>
+      審査を通過したら、マイページからリリースします。これで自分が作ったLINE絵文字の販売スタートです！
+    </p>
+
+    <div style="background:#f1fdf6; padding:18px; border-radius:16px; margin-top:24px; border:1px solid var(--line);">
+      <h3 style="margin:0 0 8px; font-size:15px; color:var(--primary-d);">💡 作って終わりにしない</h3>
+      <p style="font-size:13px; margin:0 0 10px; line-height:1.8;">
+        LINE絵文字は販売しただけで必ず売れるわけではありません。作った後に「どうやって知ってもらうか」も考えてみましょう。
+      </p>
+      <ul style="font-size:12.5px; padding-left:20px; margin:0; line-height:1.8; color:var(--ink-2);">
+        <li>Instagramで制作過程を投稿する</li>
+        <li>完成した絵文字をストーリーズで紹介する</li>
+        <li>実際にLINEで使った画面を見せる</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="cta-image-wrap">
+      <img src="7930.png" alt="50代AI初心者でも始められる AIマネタイズの教科書">
+    </div>
+
+    <div class="cta-text-body">
+      <p style="font-weight:bold; color:var(--primary-d); font-size:15px; text-align:center;">
+        ※50代でもできるAIを活用した副業を発信しています。
+      </p>
+      <p>
+        副業ってどんなことをすればいいの？本当に収入につながるの？<br>
+        やってみたいけど何をどうしたらいいかわからない、最初はこんな風に思いますよね？私がそうでした。
+      </p>
+      <p>
+        でも、やり方を知って正しく行動したらびっくりするほど生活が一変しました。<br>
+        特別なスキルがなくてもあなたの経験が武器になります。
+      </p>
+      <p>
+        どういう事？って思うかもしれませんが、パソコンが苦手な私でも毎月パート代の4〜5倍の収入を得られるようになった方法をご紹介しています。
+      </p>
+      <p style="background:#fff0f3; padding:10px; border-radius:8px; border-left:3px solid var(--pink-accent); font-weight:bold;">
+        本気で毎月20万増やしたい方には、本気でそれを教えるためのサポート会も無料で行なっています。
+      </p>
+      <p style="text-align:center; margin-bottom:0; font-weight:bold; color:#111;">
+        知りたい方のみ ここをタップしてください ⬇︎
+      </p>
+    </div>
+
+    <a href="https://utage-system.com/line/open/nj3MC6diybeh?mtid=D7R7OLXWMBeV" class="line-btn" target="_blank" rel="noopener">
+      <span class="tap-text">＼ 本気で収入を増やしたい方限定 ／</span>
+      <span class="main-text">
+        <svg viewBox="0 0 24 24"><path d="M23.929 10.318C23.929 4.622 18.571 0 11.96 0 5.351 0 0 4.622 0 10.318c0 5.093 4.148 9.387 9.873 10.155.39.083.91.24 1.047.55.123.277.08.625.04.86-.06.337-.384 2.29-.444 2.65-.098.583.473.81.93.593 1.134-.54 6.104-3.594 8.784-6.494 2.45-2.656 3.7-5.467 3.7-8.314z"/></svg>
+        公式LINEで詳しく見てみる
+      </span>
+    </a>
+  </section>
+
+  <footer>
+    <div>
+      <a href="/">ホーム</a> |
+      <a href="/about/">当サイトについて</a> |
+      <a href="/privacy/">プライバシーポリシー</a>
+    </div>
+    <div style="margin-top:10px; font-size:11px; line-height:1.6;">
+      ※LINEおよびLINE Creators Marketは、LINEヤフー株式会社の商標または登録商標です。<br>
+      ※当ページで紹介している情報は執筆時点のものであり、仕様等は変更される場合があります。
+    </div>
+    <div class="copy">
+      &copy; AI Monetize Guide All Rights Reserved.
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  async function copyText(id) {
+    const text = document.getElementById(id).innerText;
+    try {
+      await navigator.clipboard.writeText(text);
+      alert('プロンプトをコピーしました！');
+    } catch (err) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        alert('プロンプトをコピーしました！');
+      } catch(e) {
+        alert('コピーに失敗しました');
+      }
+      document.body.removeChild(textarea);
+    }
+  }
+</script>
+
+</body>
+</html>
